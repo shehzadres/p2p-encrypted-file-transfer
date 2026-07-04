@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Build & syntax check
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build frontend
+        run: npm run build --workspace=frontend
+
+      - name: Syntax-check backend
+        run: |
+          for f in $(find backend/src backend/config -name "*.js"); do
+            node --check "$f" || exit 1
+          done
+
+      - name: Verify backend boots
+        run: |
+          cp backend/.env.example backend/.env
+          node backend/src/index.js &
+          BACKEND_PID=$!
+          for i in $(seq 1 20); do
+            curl -s -o /dev/null http://localhost:3001/api/health && break
+            sleep 0.3
+          done
+          curl -sf http://localhost:3001/api/health
+          kill $BACKEND_PID

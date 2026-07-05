@@ -1,37 +1,21 @@
 #Nexus Transfer
 
-![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)
+<p align="center">
 
-![Node.js](https://img.shields.io/badge/Node.js-24-339933?logo=node.js&logoColor=white)
+<img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white" />
+<img src="https://img.shields.io/badge/Node.js-24-339933?logo=node.js&logoColor=white" />
+<img src="https://img.shields.io/badge/WebRTC-Peer--to--Peer-0A84FF" />
+<img src="https://img.shields.io/badge/libsodium-End--to--End%20Encryption-7B3FE4" />
+<img src="https://img.shields.io/badge/Vite-Frontend-646CFF?logo=vite" />
+<img src="https://img.shields.io/badge/Express-Backend-black?logo=express" />
+<img src="https://img.shields.io/badge/License-MIT-green" />
 
-![WebRTC](https://img.shields.io/badge/WebRTC-Peer--to--Peer-0A84FF)
-
-![libsodium](https://img.shields.io/badge/libsodium-End--to--End%20Encryption-7B3FE4)
-
-[![Live Demo](https://img.shields.io/badge/Live-Demo-success)](https://p2p-encrypted-file-transfer-fronten.vercel.app)
-
-![Vite](https://img.shields.io/badge/Vite-Frontend-646CFF?logo=vite)
-
-![Express](https://img.shields.io/badge/Express-Backend-black?logo=express)
-
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-Styled-38BDF8?logo=tailwindcss)
-
-![GitHub last commit](https://img.shields.io/github/last-commit/shehzadres/p2p-encrypted-file-transfer)
-
-![GitHub repo size](https://img.shields.io/github/repo-size/shehzadres/p2p-encrypted-file-transfer)
-
-[![Issues](https://img.shields.io/github/issues/shehzadres/p2p-encrypted-file-transfer)](../../issues)
-
-[![Stars](https://img.shields.io/github/stars/shehzadres/p2p-encrypted-file-transfer)](../../stargazers)
+</p>
 
 A production-grade peer-to-peer encrypted file transfer application built with React, WebRTC, Node.js, and libsodium.
 
 Transfer files directly between browsers with end-to-end encryption. No cloud storage, no intermediary file uploads, and no accounts required.
 
-<p align="center">
-
-
-</p>
 
 <p align="center"> <i>Files never pass through the server.</i><br/> <i>Your browser encrypts the data, establishes a direct WebRTC connection, and transfers it securely to the recipient.</i> </p>
 

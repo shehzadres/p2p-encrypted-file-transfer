@@ -280,7 +280,16 @@ export class ReceiveBuffer {
    * Returns { ok: boolean, isFinal: boolean, errorMsg?: string }
    */
   async processChunk(seq, ciphertext) {
-    // Sequence check
+    // Late duplicate — the sender's ACK timeout fired and retransmitted a chunk
+    // that actually arrived fine the first time (common on slow/relayed links
+    // where the ACK just took longer than the timeout). Since the DataChannel
+    // is ordered+reliable, this chunk was already processed; harmlessly
+    // re-ACK it and drop it instead of treating it as a desync.
+    if (seq < this.expectedSeq) {
+      return { ok: true, isFinal: false, duplicate: true };
+    }
+    // Sequence check — a seq AHEAD of expected means a genuine gap/desync,
+    // which is unrecoverable with a stateful secretstream.
     if (seq !== this.expectedSeq) {
       return { ok: false, errorMsg: `Expected seq ${this.expectedSeq}, got ${seq}` };
     }

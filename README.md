@@ -8,7 +8,7 @@
 
 ![libsodium](https://img.shields.io/badge/libsodium-End--to--End%20Encryption-7B3FE4)
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-success)](https://YOUR_DEMO_URL)
+[![Live Demo](https://img.shields.io/badge/Live-Demo-success)](https://p2p-encrypted-file-transfer-fronten.vercel.app)
 
 ![Vite](https://img.shields.io/badge/Vite-Frontend-646CFF?logo=vite)
 
@@ -124,7 +124,7 @@ This project was built to explore modern real-time web technologies, including p
 
 Explore Nexus Transfer in action.
 
-| 🌐 Live Demo     | https://your-demo-url.vercel.app                        |
+| 🌐 Live Demo     | https://p2p-encrypted-file-transfer-fronten.vercel.app                       |
 
 ## Screenshots
 

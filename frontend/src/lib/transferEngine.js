@@ -351,7 +351,7 @@ export class TransferEngine extends EventTarget {
     const buf = this._receiveBuffers.get(id);
     if (!buf || !buf.decryptState) return;
 
-    const { ok, isFinal, errorMsg } = await buf.processChunk(seq, ciphertext);
+    const { ok, isFinal, errorMsg, duplicate } = await buf.processChunk(seq, ciphertext);
 
     if (!ok) {
       // NACK — sender will retransmit
@@ -367,8 +367,13 @@ export class TransferEngine extends EventTarget {
       return;
     }
 
-    // ACK
+    // ACK — even for a harmless late duplicate, so the sender's pending-ack
+    // bookkeeping (if it hasn't already cleared) can settle.
     this._pc.send(encodeAck(seq));
+
+    // Duplicate re-delivery of an already-processed chunk — nothing new to
+    // report, skip the progress event.
+    if (duplicate) return;
 
     // Emit progress
     this._emit('transfer-progress', {

@@ -1,6 +1,10 @@
 #Nexus Transfer
 
 <p align="center">
+  <img src="./docs/images/hero.png" alt="Nexus Transfer Interface" width="100%">
+</p>
+
+<p align="center">
 
 <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white" />
 <img src="https://img.shields.io/badge/Node.js-24-339933?logo=node.js&logoColor=white" />
@@ -18,19 +22,6 @@ Transfer files directly between browsers with end-to-end encryption. No cloud st
 
 
 <p align="center"> <i>Files never pass through the server.</i><br/> <i>Your browser encrypts the data, establishes a direct WebRTC connection, and transfers it securely to the recipient.</i> </p>
-
-Browser A ──────────── WebRTC DataChannel ──────────── Browser B
-   │            (encrypted, peer-to-peer, direct)            │
-   │                                                          │
-   └──────────────── Signaling Server ───────────────────────┘
-              (room bookkeeping + SDP/ICE relay only)
-
-
-## 📸 Preview
-
-<p align="center">
-  <img src="./docs/images/hero.png" alt="Nexus Transfer Interface" width="100%">
-</p>
 
 ## Why Nexus Transfer?
 

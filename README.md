@@ -290,7 +290,7 @@ This project explores several advanced software engineering concepts, including:
 
 ---
 
-## Project structure
+### Project structure
 
 The repository is organized as a lightweight monorepo with clearly separated frontend, backend, and shared modules. Each directory has a focused responsibility, making the application easier to extend and maintain.
 
@@ -301,7 +301,6 @@ The repository is organized as a lightweight monorepo with clearly separated fro
 | `shared/`   | Constants, event names, protocol definitions, and shared utilities used by both frontend and backend |
 
 ```text
-
 p2p-transfer/
 ├── frontend/
 │   ├── src/

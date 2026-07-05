@@ -300,6 +300,8 @@ The repository is organized as a lightweight monorepo with clearly separated fro
 | `backend/`  | Express server responsible for signaling, room management, and TURN configuration                    |
 | `shared/`   | Constants, event names, protocol definitions, and shared utilities used by both frontend and backend |
 
+---
+
 p2p-transfer/
 ├── frontend/
 │   ├── src/

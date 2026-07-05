@@ -1,4 +1,4 @@
-#Nexus Transfer
+##Nexus Transfer
 
 <p align="center">
   <img src="./docs/images/hero.png" alt="Nexus Transfer Interface" width="100%">

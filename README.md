@@ -288,6 +288,7 @@ This project explores several advanced software engineering concepts, including:
 * Responsive and accessible user interface design
 * Production-oriented deployment and configuration
 
+---
 
 ## Project structure
 
@@ -324,7 +325,9 @@ p2p-transfer/
 │   └── config/                Environment config loader
 └── shared/
     └── constants.js           Event names, chunk sizes, timeouts — imported by both sides
-```
+
+---
+
 ### Design Principles
 
 The project follows a modular architecture where each layer has a single responsibility.
@@ -336,6 +339,8 @@ The project follows a modular architecture where each layer has a single respons
 
 This separation reduces complexity, improves maintainability, and makes individual components easier to evolve independently.
 
+---
+
 ## Getting started
 
 > **Quick Start**
@@ -344,6 +349,7 @@ This separation reduces complexity, improves maintainability, and makes individu
 >
 > Typical setup takes less than **5 minutes**.
 
+---
 
 ### Prerequisites
 

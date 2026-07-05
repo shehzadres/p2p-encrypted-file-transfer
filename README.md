@@ -123,7 +123,7 @@ This project was built to explore modern real-time web technologies, including p
 
 Explore Nexus Transfer in action.
 
-| 🌐 Live Demo     | https://p2p-encrypted-file-transfer-fronten.vercel.app                       |
+ 🌐 Live Demo     | https://p2p-encrypted-file-transfer-fronten.vercel.app
 
 ## Screenshots
 
@@ -300,7 +300,7 @@ The repository is organized as a lightweight monorepo with clearly separated fro
 | `backend/`  | Express server responsible for signaling, room management, and TURN configuration                    |
 | `shared/`   | Constants, event names, protocol definitions, and shared utilities used by both frontend and backend |
 
----
+```text
 
 p2p-transfer/
 ├── frontend/
@@ -328,6 +328,7 @@ p2p-transfer/
 └── shared/
     └── constants.js           Event names, chunk sizes, timeouts — imported by both sides
 
+```
 ---
 
 ### Design Principles

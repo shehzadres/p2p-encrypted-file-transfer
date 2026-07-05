@@ -30,7 +30,6 @@ Transfer files directly between browsers with end-to-end encryption. No cloud st
 
 <p align="center">
 
-🚀 Live Demo • 📖 Documentation • 🐞 Report an Issue • ⭐ Star the Repository
 
 </p>
 
@@ -206,7 +205,7 @@ frontend/src/lib/
 
 The architecture intentionally separates signaling, networking, and cryptography into independent layers so that each concern can evolve without tightly coupling the rest of the system.
 
-```
+---
 
 ## Security model
 
@@ -228,6 +227,8 @@ The table below summarizes the primary security mechanisms used throughout the a
 | Key hygiene | Session and per-file keys are zeroed (`zeroKey()`) immediately after use and on connection teardown |
 | Transport | DTLS-SRTP via WebRTC's mandatory encryption, on top of the application-layer encryption above (defense in depth) |
 
+---
+
 ### Threat Model
 
 Nexus Transfer is designed to minimize trust in the backend infrastructure.
@@ -242,6 +243,8 @@ As a result:
 * Every transferred file is authenticated and verified before reconstruction.
 * Session fingerprints allow participants to verify they are communicating with the intended peer.
 
+---
+
 ### Server Visibility
 
 | The server **can** see | The server **cannot** see |
@@ -255,6 +258,7 @@ As a result:
 
 > **Privacy by Design:** The application is intentionally architected so that compromising the signaling server alone is insufficient to expose transferred files. Trust is placed only in the communicating peers, not in the intermediary infrastructure.
 
+---
 
 ## Tech Stack
 

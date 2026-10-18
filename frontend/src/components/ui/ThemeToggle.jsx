@@ -10,17 +10,13 @@ const OPTIONS = [
 ];
 
 /**
- * ThemeToggle — icon button that flips dark/light directly on click,
- * with a dropdown (long-press / click-and-hold not required — secondary
- * click area) to explicitly pick System.
- *
- * Simple click: toggles dark <-> light.
- * Click the chevron-less small arrow: opens menu with all 3 options.
+ * ThemeToggle — glass icon button that opens a menu to pick
+ * Light / Dark / System. The icon morphs between sun and moon.
  */
 export function ThemeToggle({ className }) {
-  const { preference, resolved, setPreference, toggle } = useTheme();
+  const { preference, resolved, setPreference } = useTheme();
   const [open, setOpen] = useState(false);
-  const menuRef  = useRef(null);
+  const menuRef   = useRef(null);
   const buttonRef = useRef(null);
 
   useEffect(() => {
@@ -47,16 +43,17 @@ export function ThemeToggle({ className }) {
         aria-label="Change theme"
         aria-haspopup="menu"
         aria-expanded={open}
-        className="w-8 h-8 rounded-lg flex items-center justify-center text-muted
-                   hover:text-text hover:bg-border/60 transition-all duration-150
-                   active:scale-90"
+        className="w-9 h-9 rounded-full flex items-center justify-center text-subtle
+                   bg-[var(--fill-1)] border border-[var(--line)]
+                   hover:text-bright hover:bg-[var(--fill-2)] hover:border-[var(--line-strong)]
+                   transition-all duration-200 active:scale-90"
         title={`Theme: ${preference === 'system' ? `System (${resolved})` : preference}`}
       >
         <span className="relative w-4 h-4">
           <Sun
             size={16}
             className={cn(
-              'absolute inset-0 transition-all duration-300',
+              'absolute inset-0 transition-all duration-500 ease-spring',
               resolved === 'light' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 -rotate-90 scale-50',
             )}
             aria-hidden
@@ -64,7 +61,7 @@ export function ThemeToggle({ className }) {
           <Moon
             size={16}
             className={cn(
-              'absolute inset-0 transition-all duration-300',
+              'absolute inset-0 transition-all duration-500 ease-spring',
               resolved === 'dark' ? 'opacity-100 rotate-0 scale-100' : 'opacity-0 rotate-90 scale-50',
             )}
             aria-hidden
@@ -77,8 +74,8 @@ export function ThemeToggle({ className }) {
           ref={menuRef}
           role="menu"
           aria-label="Theme options"
-          className="absolute right-0 top-full mt-2 w-36 glass-raised rounded-xl
-                     shadow-elevated overflow-hidden z-50 animate-scale-in origin-top-right py-1"
+          className="absolute right-0 top-full mt-3 w-40 glass-bright rounded-2xl
+                     overflow-hidden z-50 animate-scale-in origin-top-right p-1.5"
         >
           {OPTIONS.map(({ id, label, Icon }) => {
             const active = preference === id;
@@ -89,13 +86,15 @@ export function ThemeToggle({ className }) {
                 aria-checked={active}
                 onClick={() => { setPreference(id); setOpen(false); }}
                 className={cn(
-                  'w-full flex items-center gap-2.5 px-3 py-2 text-xs text-left transition-colors',
-                  active ? 'text-accent-light bg-accent-muted' : 'text-subtle hover:text-text hover:bg-border/60',
+                  'w-full flex items-center gap-2.5 px-3 py-2 text-xs text-left rounded-xl transition-colors',
+                  active
+                    ? 'text-bright bg-accent/15'
+                    : 'text-subtle hover:text-bright hover:bg-[var(--fill-2)]',
                 )}
               >
-                <Icon size={13} aria-hidden />
-                <span className="flex-1">{label}</span>
-                {active && <Check size={12} aria-hidden />}
+                <Icon size={14} aria-hidden className={active ? 'text-accent-light' : undefined} />
+                <span className="flex-1 font-medium">{label}</span>
+                {active && <Check size={13} className="text-accent-light" aria-hidden />}
               </button>
             );
           })}

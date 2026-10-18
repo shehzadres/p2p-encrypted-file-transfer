@@ -35,13 +35,13 @@ export function TransferItem({ transfer, onPause, onResume, onCancel, onRetry, o
   return (
     <div
       className={cn(
-        'glass rounded-2xl p-4 transition-all duration-300',
+        'glass rounded-2xl p-4 transition-all duration-300 mb-2',
         'ring-1 ring-transparent',
-        isActive && !stalled && 'border-accent/25 ring-accent/10',
-        isPaused  && 'border-warning/25 ring-warning/10',
-        isOk      && 'border-success/20 ring-success/10',
-        isError   && 'border-danger/20  ring-danger/10',
-        stalled && isActive && 'border-warning/40 ring-warning/20',
+        isActive && !stalled && 'ring-accent/35 shadow-[0_0_30px_-10px_rgb(var(--c-accent)/0.55)]',
+        isPaused  && 'ring-warning/35',
+        isOk      && 'ring-success/30',
+        isError   && 'ring-danger/35',
+        stalled && isActive && 'ring-warning/50',
         isOk && 'animate-fade-in',
       )}
       role="listitem"

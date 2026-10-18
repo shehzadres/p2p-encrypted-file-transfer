@@ -6,17 +6,19 @@ export default function NotFoundPage() {
   const navigate = useNavigate();
   return (
     <div
-      className="flex-1 flex items-center justify-center px-4"
+      className="flex-1 flex items-center justify-center px-4 py-16"
       role="main"
       aria-label="Page not found"
     >
-      <div className="text-center max-w-sm animate-slide-up">
-        <div className="w-20 h-20 rounded-3xl bg-border/60 border border-border
-                        flex items-center justify-center mx-auto mb-6">
-          <Compass size={36} className="text-muted" aria-hidden />
+      <div className="glass-bright rounded-[32px] text-center max-w-md w-full px-8 py-12 animate-slide-up">
+        <div className="relative w-20 h-20 mx-auto mb-6">
+          <div aria-hidden className="absolute inset-0 rounded-3xl bg-accent/40 blur-xl opacity-70" />
+          <div className="glass-raised relative w-20 h-20 rounded-3xl flex items-center justify-center animate-float">
+            <Compass size={34} className="text-accent-light" aria-hidden />
+          </div>
         </div>
-        <p className="text-7xl font-bold text-border/80 font-mono mb-4 tabular">404</p>
-        <h1 className="text-xl font-bold text-bright mb-2 tracking-tight">Page not found</h1>
+        <p className="text-7xl font-semibold text-aurora font-mono mb-4 tabular tracking-tighter">404</p>
+        <h1 className="text-xl font-semibold text-bright mb-2 tracking-tight">Page not found</h1>
         <p className="text-muted text-sm mb-8 leading-relaxed">
           The page you're looking for doesn't exist or may have been moved.
         </p>

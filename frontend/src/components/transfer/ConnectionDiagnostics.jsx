@@ -207,7 +207,7 @@ function RTTSparkline({ history }) {
   }).join(' ');
   return (
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-10" aria-hidden>
-      <polyline points={pts} fill="none" stroke="#6c63ff"
+      <polyline points={pts} fill="none" stroke="rgb(139,124,255)"
         strokeWidth="1.5" strokeLinejoin="round" strokeLinecap="round" />
     </svg>
   );

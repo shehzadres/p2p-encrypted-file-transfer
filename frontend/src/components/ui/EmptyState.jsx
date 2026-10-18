@@ -1,7 +1,8 @@
 import { cn } from '@/lib/utils';
 
 /**
- * EmptyState — illustrated empty states with optional action.
+ * EmptyState — glass icon tile with optional action.
+ * `icon` can be any React node (a lucide icon is recommended).
  */
 export function EmptyState({
   icon,
@@ -23,15 +24,18 @@ export function EmptyState({
       role="status"
     >
       {icon && (
-        <div className={cn(
-          'rounded-2xl bg-border/60 border border-border flex items-center justify-center mb-4',
-          isLg ? 'w-16 h-16 text-2xl' : 'w-12 h-12 text-xl',
-        )}>
-          {icon}
+        <div className="relative mb-5">
+          <div aria-hidden className="absolute inset-0 rounded-2xl bg-accent/30 blur-xl opacity-60" />
+          <div className={cn(
+            'glass-raised relative rounded-2xl flex items-center justify-center text-accent-light',
+            isLg ? 'w-16 h-16' : 'w-14 h-14',
+          )}>
+            {icon}
+          </div>
         </div>
       )}
       <p className={cn(
-        'font-semibold text-text mb-1.5',
+        'font-semibold text-bright mb-1.5 tracking-tight',
         isLg ? 'text-base' : 'text-sm',
       )}>
         {title}

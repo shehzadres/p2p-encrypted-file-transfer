@@ -1,6 +1,21 @@
-import { useState } from 'react';
-import { Clock, Users, Flame, ChevronDown, ChevronUp } from 'lucide-react';
+import { useState, useId } from 'react';
+import { Clock, Users, Flame, ChevronDown, SlidersHorizontal } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Segmented } from '@/components/ui/Segmented';
+import { Switch } from '@/components/ui/Switch';
+
+const EXPIRY_OPTS = [
+  { id: 'hour',  label: '1 hour'   },
+  { id: 'day',   label: '24 hours' },
+  { id: 'week',  label: '7 days'   },
+  { id: 'never', label: 'Never'    },
+];
+
+const PEER_OPTS = [
+  { id: 1, label: '1'  },
+  { id: 5, label: '5'  },
+  { id: 9, label: '9'  },
+];
 
 /**
  * RoomOptions — collapsible panel for configuring room properties
@@ -8,138 +23,117 @@ import { cn } from '@/lib/utils';
  */
 export function RoomOptions({ value, onChange }) {
   const [open, setOpen] = useState(false);
+  const panelId = useId();
 
   const { expiryTier, maxPeers, selfDestruct } = value;
-
   const set = (patch) => onChange({ ...value, ...patch });
 
-  const EXPIRY_OPTS = [
-    { id: 'hour',  label: '1 hour'   },
-    { id: 'day',   label: '24 hours' },
-    { id: 'week',  label: '7 days'   },
-    { id: 'never', label: 'Never'    },
-  ];
-
-  const PEER_OPTS = [
-    { id: 1,  label: '1 recipient'  },
-    { id: 5,  label: '5 recipients' },
-    { id: 9,  label: '9 recipients' },
-  ];
+  const expiryLabel = EXPIRY_OPTS.find((o) => o.id === expiryTier)?.label;
+  const summary = selfDestruct
+    ? 'Self-destruct on'
+    : `${expiryLabel} · ${maxPeers} recipient${maxPeers > 1 ? 's' : ''}`;
 
   return (
-    <div className="border border-border rounded-xl overflow-hidden">
+    <div className="well overflow-hidden text-left">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center justify-between px-4 py-3 text-sm text-muted hover:text-text hover:bg-surface/50 transition-colors"
+        aria-expanded={open}
+        aria-controls={panelId}
+        className="w-full flex items-center justify-between gap-3 px-4 py-3 text-sm text-subtle
+                   hover:text-bright hover:bg-[var(--fill-1)] transition-colors"
       >
-        <span className="flex items-center gap-2">
-          <Clock size={13} className="text-accent" />
-          Advanced options
-          {selfDestruct && (
-            <span className="ml-1 text-xs text-danger font-medium">· Self-destruct on</span>
-          )}
-          {!selfDestruct && expiryTier !== 'day' && (
-            <span className="ml-1 text-xs text-muted">· {EXPIRY_OPTS.find(o => o.id === expiryTier)?.label}</span>
-          )}
+        <span className="flex items-center gap-2.5 min-w-0">
+          <SlidersHorizontal size={14} className="text-accent-light shrink-0" aria-hidden />
+          <span className="font-medium whitespace-nowrap">Advanced options</span>
+          <span className={cn(
+            'text-xs truncate',
+            selfDestruct ? 'text-danger font-medium' : 'text-muted',
+          )}>
+            · {summary}
+          </span>
         </span>
-        {open ? <ChevronUp size={13} /> : <ChevronDown size={13} />}
+        <ChevronDown
+          size={15}
+          aria-hidden
+          className={cn('shrink-0 transition-transform duration-300 ease-spring', open && 'rotate-180')}
+        />
       </button>
 
-      {open && (
-        <div className="border-t border-border px-4 py-4 space-y-4 bg-surface/30 animate-fade-in">
+      {/* Animated expand: grid-rows 0fr → 1fr */}
+      <div
+        id={panelId}
+        className={cn(
+          'grid transition-[grid-template-rows,opacity] duration-500 ease-spring',
+          open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0',
+        )}
+        aria-hidden={!open}
+      >
+        <div className="overflow-hidden">
+          <div className="divider px-4 py-4 space-y-5" inert={open ? undefined : ''}>
 
-          {/* Expiry */}
-          <div>
-            <p className="text-xs text-muted font-medium mb-2 flex items-center gap-1.5">
-              <Clock size={11} /> Link expires after
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {EXPIRY_OPTS.map((o) => (
-                <OptionChip
-                  key={o.id}
-                  label={o.label}
-                  active={!selfDestruct && expiryTier === o.id}
-                  disabled={selfDestruct}
-                  onClick={() => set({ expiryTier: o.id, selfDestruct: false })}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Max recipients */}
-          <div>
-            <p className="text-xs text-muted font-medium mb-2 flex items-center gap-1.5">
-              <Users size={11} /> Max recipients
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {PEER_OPTS.map((o) => (
-                <OptionChip
-                  key={o.id}
-                  label={o.label}
-                  active={!selfDestruct && maxPeers === o.id}
-                  disabled={selfDestruct}
-                  onClick={() => set({ maxPeers: o.id, selfDestruct: false })}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Self-destruct */}
-          <div>
-            <p className="text-xs text-muted font-medium mb-2 flex items-center gap-1.5">
-              <Flame size={11} className="text-danger" /> Self-destruct
-            </p>
-            <button
-              type="button"
-              onClick={() => set({
-                selfDestruct: !selfDestruct,
-                expiryTier:   !selfDestruct ? 'hour' : 'day',
-                maxPeers:     !selfDestruct ? 1      : maxPeers,
-              })}
-              className={cn(
-                'flex items-center gap-2.5 px-3 py-2 rounded-lg border text-xs font-medium transition-all',
-                selfDestruct
-                  ? 'bg-danger/15 border-danger/40 text-danger'
-                  : 'bg-surface border-border text-muted hover:border-border-bright hover:text-text',
-              )}
-            >
-              <div className={cn(
-                'w-4 h-4 rounded-full border-2 flex items-center justify-center transition-colors',
-                selfDestruct ? 'border-danger bg-danger' : 'border-border',
-              )}>
-                {selfDestruct && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
-              </div>
-              {selfDestruct ? 'On — link expires after first transfer' : 'Off — link stays active'}
-            </button>
-            {selfDestruct && (
-              <p className="text-xs text-muted mt-2 leading-relaxed">
-                Room closes permanently after the recipient receives all files.
-                Link expires in 1 hour if unused.
+            {/* Expiry */}
+            <div>
+              <p className="text-xs text-muted font-medium mb-2 flex items-center gap-1.5">
+                <Clock size={12} aria-hidden /> Link expires after
               </p>
-            )}
+              <Segmented
+                size="sm"
+                label="Link expiry"
+                value={selfDestruct ? null : expiryTier}
+                options={EXPIRY_OPTS.map((o) => ({ ...o, disabled: selfDestruct }))}
+                onChange={(id) => set({ expiryTier: id, selfDestruct: false })}
+                className={cn(selfDestruct && 'opacity-50')}
+              />
+            </div>
+
+            {/* Max recipients */}
+            <div>
+              <p className="text-xs text-muted font-medium mb-2 flex items-center gap-1.5">
+                <Users size={12} aria-hidden /> Max recipients
+              </p>
+              <Segmented
+                size="sm"
+                label="Maximum recipients"
+                value={selfDestruct ? null : maxPeers}
+                options={PEER_OPTS.map((o) => ({ ...o, disabled: selfDestruct }))}
+                onChange={(id) => set({ maxPeers: id, selfDestruct: false })}
+                className={cn(selfDestruct && 'opacity-50')}
+              />
+            </div>
+
+            {/* Self-destruct */}
+            <div className={cn(
+              'flex items-center justify-between gap-4 rounded-xl px-3.5 py-3 border transition-colors duration-300',
+              selfDestruct
+                ? 'bg-danger/10 border-danger/30'
+                : 'bg-[var(--fill-1)] border-[var(--line)]',
+            )}>
+              <div className="min-w-0">
+                <p className="text-sm font-medium text-text flex items-center gap-2">
+                  <Flame size={14} className="text-danger" aria-hidden />
+                  Self-destruct
+                </p>
+                <p className="text-xs text-muted mt-0.5 leading-relaxed">
+                  {selfDestruct
+                    ? 'Room closes after the recipient receives all files. Expires in 1 hour if unused.'
+                    : 'One-time link that closes after the first transfer.'}
+                </p>
+              </div>
+              <Switch
+                tone="danger"
+                label="Self-destruct"
+                checked={selfDestruct}
+                onChange={(on) => set({
+                  selfDestruct: on,
+                  expiryTier:   on ? 'hour' : 'day',
+                  maxPeers:     on ? 1      : maxPeers,
+                })}
+              />
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
-  );
-}
-
-function OptionChip({ label, active, disabled, onClick }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      className={cn(
-        'px-3 py-1.5 rounded-lg border text-xs font-medium transition-all',
-        active
-          ? 'bg-accent/15 border-accent/40 text-accent'
-          : 'bg-surface border-border text-muted hover:border-border-bright hover:text-text',
-        disabled && 'opacity-40 cursor-not-allowed',
-      )}
-    >
-      {label}
-    </button>
   );
 }

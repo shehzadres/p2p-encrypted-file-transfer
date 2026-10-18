@@ -1,4 +1,4 @@
-import { FolderOpen, Upload, Sparkles } from 'lucide-react';
+import { FolderOpen, Upload } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useDropZone } from '@/hooks/useDropZone';
 import { Button } from '@/components/ui/Button';
@@ -14,11 +14,9 @@ export function DropZone({ onFiles, disabled, className }) {
     <div
       {...dropZoneProps}
       className={cn(
-        'relative rounded-2xl border-2 border-dashed transition-all duration-300 cursor-pointer group',
-        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2',
-        isDragging
-          ? 'border-accent bg-accent-muted scale-[1.01] shadow-glow'
-          : 'border-border hover:border-border-bright hover:bg-surface/40',
+        'dz group cursor-pointer',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-void',
+        isDragging && 'dz-active',
         disabled && 'opacity-50 cursor-not-allowed',
         className,
       )}
@@ -38,42 +36,36 @@ export function DropZone({ onFiles, disabled, className }) {
 
       {/* Drop overlay */}
       {isDragging && (
-        <div className="absolute inset-0 rounded-2xl flex items-center justify-center
-                        bg-accent-muted/50 backdrop-blur-sm z-10 animate-fade-in">
+        <div className="absolute inset-0 rounded-[inherit] flex items-center justify-center
+                        bg-gradient-to-br from-accent/20 via-transparent to-teal/20
+                        backdrop-blur-sm z-10 animate-fade-in">
           <div className="text-center">
-            <Upload size={32} className="text-accent mx-auto mb-2 animate-bounce-sm" />
-            <p className="text-accent font-semibold text-sm">Drop to add files</p>
+            <Upload size={34} className="text-accent-light mx-auto mb-3 animate-bounce-sm" aria-hidden />
+            <p className="text-bright font-semibold text-sm">Drop to add files</p>
           </div>
         </div>
       )}
 
       <div className={cn(
-        'flex flex-col items-center justify-center py-12 px-6 text-center pointer-events-none',
+        'flex flex-col items-center justify-center py-14 px-6 text-center pointer-events-none',
         'transition-opacity duration-200',
         isDragging && 'opacity-0',
       )}>
         {/* Icon cluster */}
-        <div className="relative mb-5">
-          <div className={cn(
-            'w-16 h-16 rounded-2xl border flex items-center justify-center transition-all duration-300',
-            'group-hover:scale-110 group-hover:shadow-glow-sm',
-            'bg-surface border-border group-hover:border-accent/40 group-hover:bg-accent-muted',
-          )}>
-            <Upload size={26} className="text-muted group-hover:text-accent transition-colors duration-300" />
+        <div className="relative mb-6">
+          <span aria-hidden className="absolute inset-0 rounded-3xl border border-accent/40 animate-ring-pulse" />
+          <span aria-hidden className="absolute inset-0 rounded-3xl border border-accent/30 animate-ring-pulse"
+                style={{ animationDelay: '1.4s' }} />
+          <div className="glass-raised relative w-[72px] h-[72px] rounded-3xl flex items-center justify-center
+                          animate-float group-hover:scale-105 transition-transform duration-500 ease-spring">
+            <Upload size={28} className="text-accent-light" aria-hidden />
           </div>
-          {/* Sparkle decoration */}
-          <Sparkles
-            size={14}
-            className="absolute -top-1 -right-1 text-accent opacity-0 group-hover:opacity-100
-                       transition-opacity duration-300 animate-pulse-slow"
-            aria-hidden
-          />
         </div>
 
-        <p className="text-text font-semibold mb-1.5 text-sm">
+        <p className="text-bright font-semibold mb-1.5 text-base tracking-tight">
           Drag &amp; drop files or folders
         </p>
-        <p className="text-muted text-xs mb-5 leading-relaxed">
+        <p className="text-muted text-sm mb-6 leading-relaxed">
           All formats · Up to {formatBytes(APP_CONFIG.MAX_FILE_SIZE)} per file
         </p>
 
@@ -81,19 +73,15 @@ export function DropZone({ onFiles, disabled, className }) {
           className="flex items-center gap-2 pointer-events-auto"
           onClick={(e) => e.stopPropagation()}
         >
-          <Button
-            variant="outline" size="sm" onClick={openPicker} disabled={disabled}
-            className="h-8"
-          >
-            <Upload size={12} />
+          <Button variant="primary" size="md" onClick={openPicker} disabled={disabled}>
+            <Upload size={14} aria-hidden />
             Select Files
           </Button>
           <Button
-            variant="ghost" size="sm" disabled={disabled}
+            variant="outline" size="md" disabled={disabled}
             onClick={() => document.getElementById('folder-input')?.click()}
-            className="h-8"
           >
-            <FolderOpen size={12} />
+            <FolderOpen size={14} aria-hidden />
             Folder
           </Button>
         </div>

@@ -1,18 +1,35 @@
+import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShieldCheck, Zap, ArrowRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { ShieldCheck, Zap, ArrowRight, Github } from 'lucide-react';
 import { APP_NAME } from '@/lib/config';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
+const REPO_URL = 'https://github.com/shehzadres/p2p-encrypted-file-transfer';
+
 export function AppShell({ children }) {
+  // Cursor-follow spotlight for glass surfaces: updates --mx / --my on the
+  // surface under the pointer. CSS does the rest (see .glass / .card).
+  useEffect(() => {
+    const onMove = (e) => {
+      const el = e.target?.closest?.('.glass, .glass-raised, .glass-bright, .card, .card-interactive');
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      el.style.setProperty('--my', `${e.clientY - r.top}px`);
+    };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    return () => window.removeEventListener('pointermove', onMove);
+  }, []);
+
   return (
-    <div className="min-h-screen flex flex-col bg-void relative overflow-x-hidden transition-colors duration-300">
-      {/* Ambient background glow */}
-      <div className="pointer-events-none fixed inset-0 overflow-hidden" aria-hidden>
-        <div className="absolute -top-64 left-1/2 -translate-x-1/2 w-[900px] h-[600px]
-                        bg-accent/5 rounded-full blur-[120px] animate-pulse-slow" />
-        <div className="absolute top-1/3 -right-64 w-[600px] h-[500px]
-                        bg-teal/3 rounded-full blur-[100px]" />
+    <div className="min-h-screen flex flex-col bg-void relative overflow-x-hidden transition-colors duration-500">
+      {/* Aurora backdrop */}
+      <div className="aurora" aria-hidden>
+        <span className="orb orb-a animate-orb-a" />
+        <span className="orb orb-b animate-orb-b" />
+        <span className="orb orb-c animate-orb-c" />
+        <span className="aurora-grid" />
+        <span className="aurora-grain" />
       </div>
 
       {/* Skip navigation */}
@@ -32,42 +49,51 @@ function Header() {
   const isHome   = location.pathname === '/';
 
   return (
-    <header className="sticky top-0 z-50" role="banner">
-      {/* Blur backing */}
-      <div className="absolute inset-0 bg-void/70 backdrop-blur-xl border-b border-border/50 transition-colors duration-300" />
-
-      <div className="relative max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+    <header className="sticky top-0 z-50 px-3 sm:px-6 pt-3" role="banner">
+      <div className="glass-raised max-w-6xl mx-auto h-14 rounded-full pl-3 pr-2 sm:pl-4 sm:pr-2.5
+                      flex items-center justify-between">
         {/* Logo */}
         <Link
           to="/"
-          className="flex items-center gap-2.5 group rounded-lg focus-visible:ring-2
+          className="flex items-center gap-2.5 group rounded-full focus-visible:ring-2
                      focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-void"
           aria-label="Nexus Transfer — home"
         >
           <NexusLogo />
-          <span className="font-semibold text-text tracking-tight group-hover:text-bright transition-colors">
+          <span className="font-semibold text-bright tracking-tight">
             {APP_NAME}
           </span>
         </Link>
 
         {/* Nav */}
-        <nav aria-label="Header navigation" className="flex items-center gap-1.5">
-          <div className="hidden sm:flex items-center gap-1.5 mr-1">
-            <Pill icon={<ShieldCheck size={11} />} label="E2E Encrypted" />
-            <Pill icon={<Zap size={11} />}         label="Zero Storage"  />
+        <nav aria-label="Header navigation" className="flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-1.5 mr-1">
+            <Pill icon={<ShieldCheck size={12} />} label="E2E Encrypted" />
+            <Pill icon={<Zap size={12} />}         label="Zero Storage"  />
           </div>
 
           {!isHome && (
             <Link
               to="/"
-              className="btn-ghost text-xs h-8 px-3 rounded-lg flex items-center gap-1.5"
+              className="btn-outline text-xs h-9 px-3.5 rounded-full flex items-center gap-1.5 !py-0"
             >
               New Transfer
               <ArrowRight size={12} />
             </Link>
           )}
 
-          <div className="w-px h-5 bg-border mx-0.5" aria-hidden />
+          <a
+            href={REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="View source on GitHub"
+            className="hidden sm:flex w-9 h-9 rounded-full items-center justify-center text-subtle
+                       bg-[var(--fill-1)] border border-[var(--line)]
+                       hover:text-bright hover:bg-[var(--fill-2)] hover:border-[var(--line-strong)]
+                       transition-all duration-200 active:scale-90"
+          >
+            <Github size={16} aria-hidden />
+          </a>
 
           <ThemeToggle />
         </nav>
@@ -78,10 +104,10 @@ function Header() {
 
 function Pill({ icon, label }) {
   return (
-    <span className="hidden md:inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full
-                     bg-surface/80 border border-border text-muted text-2xs font-medium
+    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full
+                     bg-[var(--fill-1)] border border-[var(--line)] text-subtle text-2xs font-medium
                      select-none">
-      <span className="text-accent">{icon}</span>
+      <span className="text-accent-light">{icon}</span>
       {label}
     </span>
   );
@@ -89,24 +115,22 @@ function Pill({ icon, label }) {
 
 function Footer() {
   return (
-    <footer className="relative z-10 border-t border-border/30 py-6 mt-auto" role="contentinfo">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center
-                      justify-between gap-3 text-xs text-muted">
+    <footer className="relative z-10 px-3 sm:px-6 pb-4 pt-8 mt-auto" role="contentinfo">
+      <div className="glass max-w-6xl mx-auto rounded-3xl px-5 sm:px-6 py-4 flex flex-col sm:flex-row
+                      items-center justify-between gap-3 text-xs text-muted">
         <p>Files travel directly between browsers — the server is a blind relay.</p>
         <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1.5">
-            <span
-              className="w-1.5 h-1.5 rounded-full bg-success animate-pulse-dot"
-              aria-hidden
-            />
+          <span className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-success animate-pulse-dot" aria-hidden />
             <span>Server online</span>
           </span>
           <a
-            href="https://github.com"
-            className="text-muted hover:text-text transition-colors"
+            href={REPO_URL}
+            className="inline-flex items-center gap-1.5 text-subtle hover:text-bright transition-colors"
             rel="noopener noreferrer"
             target="_blank"
           >
+            <Github size={13} aria-hidden />
             GitHub
           </a>
         </div>
@@ -118,23 +142,25 @@ function Footer() {
 function NexusLogo() {
   return (
     <svg
-      width="28" height="28" viewBox="0 0 32 32" fill="none"
-      className="transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12"
+      width="32" height="32" viewBox="0 0 32 32" fill="none"
+      className="transition-transform duration-500 ease-spring group-hover:scale-110 group-hover:rotate-[18deg]
+                 drop-shadow-[0_4px_14px_rgb(var(--c-accent)/0.55)]"
       aria-hidden
     >
-      <rect width="32" height="32" rx="9" className="fill-panel transition-colors duration-300" />
-      <rect width="32" height="32" rx="9" fill="url(#logo-grad)" fillOpacity="0.6" />
-      <path d="M8 16 L16 8 L24 16 L16 24 Z" fill="none" className="stroke-accent" strokeWidth="1.8"
-            strokeLinejoin="round" />
-      <circle cx="16" cy="16" r="2.8" className="fill-accent-light" />
-      <circle cx="16" cy="8"  r="1.2" className="fill-accent" opacity="0.55" />
-      <circle cx="24" cy="16" r="1.2" className="fill-accent" opacity="0.55" />
-      <circle cx="16" cy="24" r="1.2" className="fill-accent" opacity="0.55" />
-      <circle cx="8"  cy="16" r="1.2" className="fill-accent" opacity="0.55" />
+      <rect width="32" height="32" rx="10" fill="url(#logo-bg)" />
+      <rect x="0.5" y="0.5" width="31" height="31" rx="9.5" stroke="white" strokeOpacity="0.28" />
+      <path d="M16 6.5 L25.5 16 L16 25.5 L6.5 16 Z" stroke="white" strokeOpacity="0.95" strokeWidth="1.6"
+            strokeLinejoin="round" fill="white" fillOpacity="0.1" />
+      <circle cx="16" cy="16" r="3" fill="white" />
+      <circle cx="16" cy="6.5"  r="1.4" fill="white" fillOpacity="0.8" />
+      <circle cx="25.5" cy="16" r="1.4" fill="white" fillOpacity="0.8" />
+      <circle cx="16" cy="25.5" r="1.4" fill="white" fillOpacity="0.8" />
+      <circle cx="6.5" cy="16"  r="1.4" fill="white" fillOpacity="0.8" />
       <defs>
-        <linearGradient id="logo-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#6c63ff" stopOpacity="0.3" />
-          <stop offset="1" stopColor="#06b6d4" stopOpacity="0.1" />
+        <linearGradient id="logo-bg" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+          <stop stopColor="#6c4df0" />
+          <stop offset="0.55" stopColor="#7c5cf5" />
+          <stop offset="1" stopColor="#22b8d4" />
         </linearGradient>
       </defs>
     </svg>

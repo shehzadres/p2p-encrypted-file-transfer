@@ -22,7 +22,7 @@ function applyTheme(resolved) {
   document.documentElement.classList.toggle('dark',  resolved === 'dark');
   // Keep the browser UI (address bar, etc.) in sync
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', resolved === 'light' ? '#f7f7fa' : '#050508');
+  if (meta) meta.setAttribute('content', resolved === 'light' ? '#eceffc' : '#070914');
 }
 
 /**

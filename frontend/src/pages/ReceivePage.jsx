@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Download, ArrowLeft, Wifi, ShieldCheck, ChevronDown, ChevronUp } from 'lucide-react';
+import { Download, ArrowLeft, Wifi, ShieldCheck, ChevronDown, ChevronUp, Lock } from 'lucide-react';
+import { ConnectionStepper } from '@/components/transfer/ConnectionStepper';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { StatusDot } from '@/components/ui/StatusDot';
@@ -41,9 +42,9 @@ export default function ReceivePage() {
           role="alert"
           aria-live="assertive"
         >
-          <div className="w-20 h-20 rounded-3xl bg-danger-muted border border-danger/25
-                          flex items-center justify-center mx-auto mb-6 text-3xl">
-            🔒
+          <div className="glass-raised w-20 h-20 rounded-3xl border border-danger/30
+                          flex items-center justify-center mx-auto mb-6 text-danger">
+            <Lock size={32} aria-hidden />
           </div>
           <h2 className="text-lg font-bold text-bright mb-2 tracking-tight">{state.error}</h2>
           <p className="text-muted text-sm mb-6 leading-relaxed">
@@ -59,7 +60,7 @@ export default function ReceivePage() {
   }
 
   return (
-    <div className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 py-8" aria-label="File receive session">
+    <div className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-8" aria-label="File receive session">
       {/* Header */}
       <header className="flex items-center gap-3 mb-8 animate-fade-in">
         <button onClick={() => navigate('/')} className="btn-ghost p-2 rounded-xl" aria-label="Back">
@@ -76,6 +77,16 @@ export default function ReceivePage() {
           <p className="text-muted text-xs font-mono">{roomId}</p>
         </div>
       </header>
+
+      <ConnectionStepper
+        className="mb-6 animate-fade-in"
+        phase={!hasPeers ? 0 : !keyExchangeDone ? 1 : 2}
+        steps={[
+          { label: 'Connect',   hint: 'Reach the sender' },
+          { label: 'Handshake', hint: 'Exchange keys' },
+          { label: 'Receive',   hint: 'Files arrive encrypted' },
+        ]}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* ── Main ── */}

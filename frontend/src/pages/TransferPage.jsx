@@ -1,6 +1,7 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Copy, Check, ArrowLeft, QrCode, Wifi, ChevronDown, ChevronUp, Flame, Users } from 'lucide-react';
+import { Copy, Check, ArrowLeft, QrCode, Wifi, ChevronDown, ChevronUp, Flame, Users, FolderOpen } from 'lucide-react';
+import { ConnectionStepper } from '@/components/transfer/ConnectionStepper';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { StatusDot } from '@/components/ui/StatusDot';
@@ -104,6 +105,16 @@ export default function TransferPage() {
           <p className="text-muted text-xs font-mono truncate">{roomId}</p>
         </div>
       </header>
+
+      <ConnectionStepper
+        className="mb-6 animate-fade-in"
+        phase={!hasPeers ? 0 : !keyExchangeDone ? 1 : 2}
+        steps={[
+          { label: 'Invite',    hint: 'Share the link or QR' },
+          { label: 'Handshake', hint: 'Exchange keys' },
+          { label: 'Transfer',  hint: 'Drop files to send' },
+        ]}
+      />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* ── Main ── */}
@@ -230,7 +241,7 @@ export default function TransferPage() {
           {/* Empty state when connected but nothing sent yet */}
           {isReady && state.transfers.length === 0 && queued.length === 0 && (
             <EmptyState
-              icon="📂"
+              icon={<FolderOpen size={24} aria-hidden />}
               title="Drop files to send"
               body="Drag files onto the zone above, or click to browse. Supports any format up to 10 GB."
             />

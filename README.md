@@ -108,7 +108,7 @@ Explore Nexus Transfer in action.
 
 | QR Pairing | Diagnostics |
 |------------|-------------|
-| <a href="./docs/images/qr-pairing.png"><img src="./docs/images/qr-pairing.png" width="100%"></a> | <a href="./docs/images/diagnostics.png"><img src="./docs/images/diagnostics.png" width="100%"></a> |
+| <a href="./docs/images/qr-pairing.png"><img src="./docs/images/qr-pairing.png" height="640"></a> | <a href="./docs/images/diagnostics.png"><img src="./docs/images/diagnostics.png" height="640"></a> |
 
 
 > **Note:** Browser-to-browser transfers require two peers. For the best experience, open the application on two different browsers or devices connected to the internet.

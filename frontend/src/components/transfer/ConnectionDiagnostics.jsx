@@ -148,8 +148,8 @@ export function ConnectionDiagnostics({ pc, connectionStatus, hasTurn }) {
               <div className="space-y-1 max-h-28 overflow-y-auto">
                 {diagEvents.slice(0, 10).map((e, i) => (
                   <div key={i} className="flex items-center gap-2 text-xs">
-                    <span className="text-muted font-mono w-[52px] shrink-0 tabular-nums">
-                      {new Date(e.ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                    <span className="text-muted font-mono w-[64px] shrink-0 whitespace-nowrap tabular-nums">
+                      {new Date(e.ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false })}
                     </span>
                     <span className={cn(
                       'truncate',

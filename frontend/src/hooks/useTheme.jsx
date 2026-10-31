@@ -4,15 +4,15 @@ const STORAGE_KEY = 'nexus-theme'; // 'dark' | 'light' | 'system'
 const ThemeContext = createContext(null);
 
 function getSystemPreference() {
-  if (typeof window === 'undefined' || !window.matchMedia) return 'dark';
+  if (typeof window === 'undefined' || !window.matchMedia) return 'light';
   return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 }
 
 function getStoredPreference() {
   try {
-    return localStorage.getItem(STORAGE_KEY) ?? 'dark';
+    return localStorage.getItem(STORAGE_KEY) ?? 'light';
   } catch {
-    return 'dark';
+    return 'light';
   }
 }
 
@@ -22,7 +22,7 @@ function applyTheme(resolved) {
   document.documentElement.classList.toggle('dark',  resolved === 'dark');
   // Keep the browser UI (address bar, etc.) in sync
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.setAttribute('content', resolved === 'light' ? '#eceffc' : '#070914');
+  if (meta) meta.setAttribute('content', resolved === 'light' ? '#f6f5f0' : '#181d19');
 }
 
 /**

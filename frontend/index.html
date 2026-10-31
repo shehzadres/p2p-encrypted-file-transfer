@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content="Nexus Transfer — End-to-end encrypted peer-to-peer file transfer. No uploads. No servers. No compromise." />
-    <meta name="theme-color" content="#070914" />
+    <meta name="theme-color" content="#f6f5f0" />
     <meta name="color-scheme" content="dark light" />
 
     <!-- Open Graph -->
@@ -23,14 +23,14 @@
     <script>
       (function () {
         try {
-          var pref = localStorage.getItem('nexus-theme') || 'dark';
+          var pref = localStorage.getItem('nexus-theme') || 'light';
           var resolved = pref === 'system'
             ? (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark')
             : pref;
           document.documentElement.setAttribute('data-theme', resolved);
           document.documentElement.classList.add(resolved);
         } catch (e) {
-          document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.setAttribute('data-theme', 'light');
         }
       })();
     </script>

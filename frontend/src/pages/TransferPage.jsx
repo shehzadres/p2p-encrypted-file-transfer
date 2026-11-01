@@ -77,7 +77,7 @@ export default function TransferPage() {
     : hasPeers ? 'connected' : 'connecting';
 
   return (
-    <div className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-8" aria-label="Transfer room">
+    <div className="nt-session-page flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-8" aria-label="Transfer room">
       {/* Header */}
       <header className="flex items-center gap-3 mb-8 animate-fade-in">
         <button

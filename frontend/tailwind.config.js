@@ -38,8 +38,8 @@ export default {
         rose:           'rgb(var(--c-rose)            / <alpha-value>)',
       },
       fontFamily: {
-        sans: ['Geist', 'Inter var', 'Inter', 'system-ui', 'sans-serif'],
-        mono: ['Geist Mono', 'JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+        mono: ['ui-monospace', 'SFMono-Regular', 'Consolas', 'Liberation Mono', 'monospace'],
       },
       fontSize: {
         '2xs': ['0.68rem',  { lineHeight: '1rem'  }],

@@ -89,6 +89,7 @@ export function useRoom(roomId, role) {
       if (fp) setFingerprint(fp);
     }));
 
+    unsubs.push(engine.on('transfer-created', (t) => actions.addTransfer({ ...t, peerId })));
     unsubs.push(engine.on('transfer-update',   (u) => actions.updateTransfer({ ...u, peerId })));
     unsubs.push(engine.on('transfer-incoming', (i) => actions.addTransfer({ ...i, peerId, direction: 'receive' })));
     unsubs.push(engine.on('transfer-progress', (p) => actions.updateTransfer({ ...p, peerId })));
@@ -188,13 +189,6 @@ export function useRoom(roomId, role) {
       if (!engine?._keyExchangeDone) continue;
       try {
         const ids = await engine.sendFiles(fileArray);
-        for (let i = 0; i < fileArray.length; i++) {
-          actions.addTransfer({
-            id: ids[i], name: fileArray[i].name, size: fileArray[i].size,
-            type: fileArray[i].type, status: 'queued', percent: 0,
-            speed: 0, eta: Infinity, direction: 'send', peerId,
-          });
-        }
         allIds.push(...ids);
       } catch (err) { console.error('[useRoom] sendFiles error:', err); }
     }

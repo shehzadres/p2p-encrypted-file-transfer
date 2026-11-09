@@ -89,7 +89,10 @@ export function createRoutes(rooms) {
     res.json({
       status:    'ok',
       timestamp: new Date().toISOString(),
-      turn:      Boolean(config.turn.url),
+      turn:      Boolean(
+        config.turn.url &&
+        (config.turn.secret || (config.turn.username && config.turn.credential))
+      ),
       ...rooms.stats(),
     });
   });

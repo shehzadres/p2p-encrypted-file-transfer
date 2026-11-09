@@ -7,6 +7,11 @@ import { createRoutes } from './routes.js';
 import { logger } from './utils/logger.js';
 
 const app = express();
+
+// Railway terminates public traffic at one trusted reverse-proxy hop.
+// Keep this configurable for other hosting topologies; never trust arbitrary
+// forwarded headers from direct local development requests.
+app.set('trust proxy', config.trustProxyHops);
 applyMiddleware(app);
 app.use(express.json({ limit: '16kb' }));
 

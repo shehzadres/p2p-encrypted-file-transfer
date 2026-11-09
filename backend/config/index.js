@@ -7,6 +7,10 @@ export const config = {
   roomCleanupInterval: parseInt(process.env.ROOM_CLEANUP_INTERVAL_MS || '60000', 10),
   logLevel:            process.env.LOG_LEVEL || 'info',
   isDev:               (process.env.NODE_ENV || 'development') === 'development',
+  trustProxyHops:      Number.parseInt(
+    process.env.TRUST_PROXY_HOPS ?? ((process.env.NODE_ENV || 'development') === 'production' ? '1' : '0'),
+    10,
+  ),
 
   // TURN configuration
   turn: {

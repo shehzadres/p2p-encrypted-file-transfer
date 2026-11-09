@@ -175,6 +175,17 @@ export class TransferEngine extends EventTarget {
       };
       this._transfers.set(id, state);
       ids.push(id);
+      this._emit('transfer-created', {
+        id,
+        name: file.name,
+        size: file.size,
+        type: file.type || 'application/octet-stream',
+        status: 'queued',
+        percent: 0,
+        speed: 0,
+        eta: Infinity,
+        direction: 'send',
+      });
       this._emitUpdate(state);
     }
     for (const id of ids) {
